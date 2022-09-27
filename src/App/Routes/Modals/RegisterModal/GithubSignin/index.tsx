@@ -6,7 +6,7 @@ import config from "src/config";
 import { useGithubAccount } from "src/hooks/github-account";
 import { signMessage } from "src/utils/wallet";
 
-import { accountAtom, userInformationSelector } from "src/state";
+import { accountAddressAtom, accountAtom, userInformationSelector } from "src/state";
 
 import GithubSignin from "./View";
 
@@ -16,6 +16,7 @@ type Props = {
 
 const GithubSigninContainer: FC<PropsWithChildren<Props>> = ({ children, className }) => {
   const account = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(accountAtom);
+  const accountAddress = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(accountAddressAtom);
   const refreshContributor = useRecoilRefresher_UNSTABLE(userInformationSelector);
 
   const [isRegistering, setIsRegistering] = useState(false);
@@ -26,7 +27,7 @@ const GithubSigninContainer: FC<PropsWithChildren<Props>> = ({ children, classNa
   const prevHasError = usePrevious(!!error);
 
   const onSuccess = async ({ code }: { code: string }) => {
-    if (!account) {
+    if (!account || !accountAddress) {
       console.warn("First ensure wallet is connected before displaying this component");
       return;
     }
@@ -36,12 +37,13 @@ const GithubSigninContainer: FC<PropsWithChildren<Props>> = ({ children, classNa
     try {
       const { hash, signature } = await signMessage(
         account,
-        account.address,
+        accountAddress,
+        accountAddress,
         config.STARKNET_NETWORK === "mainnet-alpha" ? "SN_MAIN" : "SN_GOERLI"
       );
 
       await connect({
-        address: account.address,
+        address: accountAddress,
         code,
         hash,
         signature,

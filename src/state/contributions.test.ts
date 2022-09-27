@@ -9,7 +9,7 @@ import {
 } from "./contributions";
 import { projectRepository } from "src/model/projects/repository";
 import { AccountInterface } from "starknet";
-import { accountAtom } from "./starknet";
+import { accountAddressAtom, accountAtom } from "./starknet";
 import { applicationRepository } from "src/model/applications/repository";
 import { contributorRepository } from "src/model/contributors/repository";
 
@@ -55,6 +55,7 @@ describe("The recoil state", () => {
     it("should return contributor applications", async () => {
       const snapshot = snapshot_UNSTABLE(({ set }) => {
         set(accountAtom, { address: "0x123456789" } as AccountInterface);
+        set(accountAddressAtom, "0x123456789");
       });
 
       const listSpy = vi.spyOn(applicationRepository, "list");
@@ -73,6 +74,7 @@ describe("The recoil state", () => {
     it("should return nothing when contributor has no application", async () => {
       const snapshot = snapshot_UNSTABLE(({ set }) => {
         set(accountAtom, { address: "0x123456789abcdef" } as AccountInterface);
+        set(accountAddressAtom, "0x123456789abcdef");
       });
 
       const listSpy = vi.spyOn(applicationRepository, "list");
@@ -89,6 +91,7 @@ describe("The recoil state", () => {
     it("should return nothing when no contributor", async () => {
       const snapshot = snapshot_UNSTABLE(({ set }) => {
         set(accountAtom, { address: "0x1234567890" } as AccountInterface);
+        set(accountAddressAtom, "0x1234567890");
       });
 
       const listSpy = vi.spyOn(applicationRepository, "list");

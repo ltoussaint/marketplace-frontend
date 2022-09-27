@@ -1,7 +1,7 @@
 import { AccountInterface } from "starknet";
 import { getMessageHash } from "starknet/dist/utils/typedData";
 
-export async function signMessage(account: AccountInterface, message: string, chainId: string) {
+export async function signMessage(account: AccountInterface, accountAddress: string, message: string, chainId: string) {
   const typedMessage = {
     domain: {
       name: "Deathnote",
@@ -22,7 +22,7 @@ export async function signMessage(account: AccountInterface, message: string, ch
     },
   };
 
-  const hash = getMessageHash(typedMessage, account.address);
+  const hash = getMessageHash(typedMessage, accountAddress);
 
   return { hash: hash, signature: await account.signMessage(typedMessage) };
 }

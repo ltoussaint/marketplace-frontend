@@ -1,6 +1,12 @@
-import { atom, selector } from "recoil";
+import { IStarknetWindowObject } from "get-starknet";
+import { atom } from "recoil";
 import { AccountInterface, ProviderInterface } from "starknet";
 import { StarknetChainId } from "starknet/dist/constants";
+
+export const walletAtom = atom<IStarknetWindowObject | undefined>({
+  key: "Wallet",
+  default: undefined,
+});
 
 export const accountAtom = atom<AccountInterface | undefined>({
   key: "Account",
@@ -17,13 +23,9 @@ export const providerAtom = atom<ProviderInterface | undefined>({
   default: undefined,
 });
 
-export const accountAddressSelector = selector({
+export const accountAddressAtom = atom<string | undefined>({
   key: "AccountAddress",
-  get: ({ get }) => {
-    const account = get(accountAtom);
-
-    return account?.address;
-  },
+  default: undefined,
 });
 
 export const blockNumberAtom = atom<string>({

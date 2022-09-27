@@ -2,14 +2,14 @@ import { selector } from "recoil";
 import { ContributorId } from "src/model/contact-information/repository";
 import { contributorRepository } from "src/model/contributors/repository";
 
-import { accountAddressSelector, blockNumberAtom } from "./starknet";
+import { accountAddressAtom, blockNumberAtom } from "./starknet";
 
 export const userInformationSelector = selector({
   key: "UserInformation",
   get: async ({ get }) => {
     get(blockNumberAtom);
 
-    const accountAddress = get(accountAddressSelector);
+    const accountAddress = get(accountAddressAtom);
 
     if (!accountAddress) {
       return undefined;

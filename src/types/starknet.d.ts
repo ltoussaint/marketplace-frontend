@@ -1,3 +1,5 @@
+import {  IStarknetWindowObject } from "get-starknet";
+
 export {};
 
 declare global {
@@ -8,3 +10,9 @@ declare global {
   }
 }
      
+declare module "@starknet-react/core" {
+
+  interface Connector {
+    _wallet: IStarknetWindowObject
+  }
+}

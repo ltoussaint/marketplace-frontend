@@ -10,6 +10,7 @@ import {
   userDiscordHandleSelector,
   userGithubHandleSelector,
   contributionsQuery,
+  accountAddressAtom,
 } from "src/state";
 import { FC, startTransition, useCallback, useState } from "react";
 import config from "src/config";
@@ -30,6 +31,7 @@ const ContributionDetailsPageContainer: FC = () => {
   const contribution = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(contributionQuery(contributionId));
   const contributorId = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(userContributorIdSelector);
   const account = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(accountAtom);
+  const accountAddress = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(accountAddressAtom);
   const isGithubRegistered = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(isGithubRegisteredSelector);
   const userGithubHandle = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(userGithubHandleSelector);
   const userDiscordHandle = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(userDiscordHandleSelector);
@@ -46,7 +48,7 @@ const ContributionDetailsPageContainer: FC = () => {
 
   const buildTypeformParams = () => {
     const typeformParams = new URLSearchParams();
-    account?.address && typeformParams.set("wallet", account.address);
+    accountAddress && typeformParams.set("wallet", accountAddress);
     userGithubHandle && typeformParams.set("github", userGithubHandle);
     contribution?.github_link && typeformParams.set("githubissue", contribution.github_link);
     contributorId && typeformParams.set("contributorid", contributorId);
@@ -153,7 +155,7 @@ const ContributionDetailsPageContainer: FC = () => {
       claim={claim}
       submit={submit}
       appliying={appliying}
-      accountAddress={account?.address}
+      accountAddress={accountAddress}
       contributorId={contributorId}
       hasAppliedToContribution={hasAppliedToContribution}
     />
